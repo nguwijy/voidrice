@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# Prints all batteries, their percentage remaining and an emoji corresponding
+# to charge status (🔌 for plugged up, 🔋 for discharging on battery, etc.).
+
+case $BLOCK_BUTTON in
+	3) notify-send " Battery module" ": discharging
+: not charging
+屢: stagnant charge
+: charging
+: charged
+- Scroll to change adjust xbacklight." ;;
+	4) awk '{print $1+10}' /sys/class/backlight/amdgpu_bl0/brightness > /sys/class/backlight/amdgpu_bl0/brightness ;;
+	5) awk '{print $1-10}' /sys/class/backlight/amdgpu_bl0/brightness > /sys/class/backlight/amdgpu_bl0/brightness ;;
+	# 4) xbacklight -inc 10 ;;  # xbacklight does not seem to work with amdgpu_bl0
+	# 5) xbacklight -dec 10 ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+# acpi alternative
+# acpi | sed "s/Battery [0-9]: //;s/[Dd]ischarging, //;s/[Nn]ot charging, //;s/[Cc]harging, //;s/[Uu]nknown, /屢/;s/[Ff]ull, //;s/ \(remaining\|until charged\)//"; exit
+
+# Loop through all attached batteries.
+for battery in /sys/class/power_supply/BAT?
+do
+	# Get its remaining capacity and charge status.
+	capacity=$(cat "$battery"/capacity 2>/dev/null) || break
+	status=$(sed "s/[Dd]ischarging//;s/[Nn]ot charging//;s/[Cc]harging//;s/[Uu]nknown/屢/;s/[Ff]ull//" "$battery"/status)
+
+	# If it is discharging and 30% or less, notify the user to charge
+	 [ "$capacity" -le 30 ] && [ "$status" = "" ] && notify-send "Please charge your battery"
+
+	# If it is charging and 90% or more, notify the user to discharge
+	 [ "$capacity" -ge 90 ] && [ "$status" = "" ] && notify-send "Please discharge your battery"
+
+	printf " %s %s%% " "$status" "$capacity"
+done

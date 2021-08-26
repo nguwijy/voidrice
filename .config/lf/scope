@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# This is the old preview file by Luke, which does not work well with img preview
 set -C -f -u
 #IFS=$'\n'
 IFS="$(printf '%b_' '\n')"; IFS="${IFS%_}"
@@ -28,13 +29,20 @@ HIGHLIGHT_SIZE_MAX=262143  # 256KiB
 HIGHLIGHT_TABWIDTH=8
 HIGHLIGHT_STYLE='pablo'
 
+# Clear the last preview (if any)
+$HOME/.config/lf/image clear
+
+# Calculate where the image should be placed on the screen.
+num=$(printf "%0.f\n" "`echo "$(tput cols) / 2" | bc`")
+numb=$(printf "%0.f\n" "`echo "$(tput cols) - $num - 1" | bc`")
+numc=$(printf "%0.f\n" "`echo "$(tput lines) - 2" | bc`")
 
 handle_mime() {
     local mimetype="${1}"
     case "${mimetype}" in
 	text/html) w3m -dump "${FILE_PATH}" ;;
 	text/troff) man ./ "${FILE_PATH}" | col -b ;;
-	text/* | */xml)
+	text/* | */xml | application/csv)
             if [ "$( stat --printf='%s' -- "${FILE_PATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]; then
                 exit 2
             fi
@@ -46,10 +54,15 @@ handle_mime() {
             highlight --replace-tabs="${HIGHLIGHT_TABWIDTH}" --out-format="${highlight_format}" \
                 --style="${HIGHLIGHT_STYLE}" --force -- "${FILE_PATH}" ;;
 	application/zip) atool --list -- "${FILE_PATH}" ;;
-        image/*) chafa --fill=block --symbols=block -c 256 -s 80x"${HEIGHT}" "${FILE_PATH}" || exit 1;;
-        video/* | audio/*|application/octet-stream) mediainfo "${FILE_PATH}" || exit 1;;
-        */pdf) pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - ;;
-        *opendocument*) odt2txt "${FILE_PATH}" ;;
+        # image/*) chafa --fill=block --symbols=block -c 256 -s 80x"${HEIGHT}" "${FILE_PATH}" || exit 1;;
+    image/*) $HOME/.config/lf/image draw "${FILE_PATH}" $num 1 $numb $numc;;
+    video/* | audio/*|application/octet-stream) mediainfo "${FILE_PATH}" || exit 1;;
+    # */pdf) pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - ;;
+    *.pdf)
+        CACHE=$(mktemp /tmp/thumbcache.XXXXX)
+        pdftoppm -png -f 1 -singlefile "$1" "$CACHE"
+        $HOME/.config/lf/image draw "$CACHE.png" $num 1 $numb $numc;;
+    *opendocument*) odt2txt "${FILE_PATH}" ;;
     esac
 }
 

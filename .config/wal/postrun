@@ -1,6 +1,14 @@
 #!/bin/bash
 
 source "${HOME}/.cache/wal/colors.sh"
+# Make upper case and convert to rgb
+bg_col=`echo $background | tr '[:lower:]' '[:upper:]'`
+back_r=`echo "ibas=16; ${bg_col:1:2}" | bc`
+back_g=`echo "ibas=16; ${bg_col:3:2}" | bc`
+back_b=`echo "ibas=16; ${bg_col:5:2}" | bc`
+
+sed -i "s/set default-bg *\"$background\"/set default-bg rgba($back_r,$back_g,$back_b,0.8)/g" "${HOME}/.cache/wal/zathurarc"
+sed -i "s/set recolor-lightcolor *\"$background\"/set recolor-lightcolor rgba($back_r,$back_g,$back_b,0)/g" "${HOME}/.cache/wal/zathurarc"
 
 mkdir -p  "${HOME}/.config/dunst"
 mkdir -p  "${HOME}/.config/zathura"

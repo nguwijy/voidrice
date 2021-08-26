@@ -3,11 +3,26 @@
 # This script is called on startup to remap keys.
 # Increase key speed via a rate change
 xset r rate 300 50
-# Map the caps lock key to super...
-setxkbmap -option caps:super
-# But when it is pressed only once, treat it as escape.
-killall xcape 2>/dev/null ; xcape -e 'Super_L=Escape'
-# Map the menu button to right super as well.
-xmodmap -e 'keycode 135 = Super_R'
-# Turn off the caps lock if on since there is no longer a key for it.
-xset -q | grep "Caps Lock:\s*on" && xdotool key Caps_Lock
+# Map the caps lock to ISO_Level3_Shift is done in xkb
+# Check /usr/share/X11/xkb/symbols/us for details
+# But when caps lock is pressed only once, treat it as escape.
+# xmodmap -e 'keycode 135 = Super_R'
+xmodmap -e 'clear Lock'
+xmodmap -e 'keycode 66 = Mode_switch NoSymbol'
+# basic movement
+xmodmap -e 'keycode 43 = h H Left Left'
+xmodmap -e 'keycode 44 = j J Down Down'
+xmodmap -e 'keycode 45 = k K Up Up'
+xmodmap -e 'keycode 46 = l L Right Right'
+# delete and backspace
+xmodmap -e 'keycode 57 = n N BackSpace BackSpace'
+xmodmap -e 'keycode 58 = m M Delete Delete'
+# home, end, pg down, pg up
+xmodmap -e 'keycode 31 = i I Home Home'
+xmodmap -e 'keycode 32 = o O End End'
+xmodmap -e 'keycode 40 = d D Next Next'
+xmodmap -e 'keycode 30 = u U Prior Prior'
+killall xcape 2>/dev/null ; xcape -e 'Mode_switch=Escape'
+# My current keyboard does not have menu button
+# # Map the menu button to right super
+# xmodmap -e 'keycode 135 = Super_R'
