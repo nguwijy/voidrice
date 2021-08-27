@@ -17,7 +17,7 @@ bgloc="${XDG_DATA_HOME:-$HOME/.local/share/}/bg"
 # wal -i "$(readlink -f "$bgloc")" -o "${XDG_CONFIG_HOME:-$HOME/.config}/wal/postrun" >/dev/null 2>&1
 # the theme using saturn is really nice, I should keep using it
 # wal --theme "/home/nguwijy/.cache/wal/schemes/_home_nguwijy__local_share_bg-photos_saturn_png_dark_None_None_1.1.0.json" -o "${XDG_CONFIG_HOME:-$HOME/.config}/wal/postrun" >/dev/null 2>&1
-wal --theme "${XDG_CONFIG_HOME:-$HOME/.config}/.cache/wal/schemes/nord.json" -o "${XDG_CONFIG_HOME:-$HOME/.config}/wal/postrun" >/dev/null 2>&1
+wal --theme "$HOME/.cache/wal/schemes/nord.json" -o "${XDG_CONFIG_HOME:-$HOME/.config}/wal/postrun" >/dev/null 2>&1
 
 pidof dwm >/dev/null && xdotool key super+F12
 xwallpaper --zoom "$bgloc"
