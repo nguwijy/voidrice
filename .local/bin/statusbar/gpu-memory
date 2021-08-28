@@ -1,0 +1,14 @@
+#!/bin/sh
+
+case $BLOCK_BUTTON in
+	1) notify-send " GPU Memory hogs" "$(ps axch -o cmd:15,%mem --sort=-%mem | head)" ;;
+	2) setsid -f "$TERMINAL" -e htop ;;
+	3) notify-send " GPU Memory module" "\- Shows GPU Memory Used/Total.
+- Click to show GPU memory hogs.
+- Middle click to open htop." ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+used=$(echo $(nvidia-smi | sed '10q;d' | cut -d'|' -f3 | cut -d'/' -f1 | tr -dc '0-9')'/1024' | bc -l)
+total=$(echo $(nvidia-smi | sed '10q;d' | cut -d'|' -f3 | cut -d'/' -f2 | tr -dc '0-9')'/1024' | bc -l)
+printf " %2.2fGiB / %2.2fGiB \n" $used $total
