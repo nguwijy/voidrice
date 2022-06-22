@@ -9,4 +9,9 @@ case $BLOCK_BUTTON in
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-free --mebi | sed -n '2{p;q}' | awk '{printf ("  %2.2fGiB / %2.2fGiB \n", ( $3 / 1024), ($2 / 1024))}'
+gpu_used=$(echo $(nvidia-smi | sed '10q;d' | cut -d'|' -f3 | cut -d'/' -f1 | tr -dc '0-9')'/1024' | bc -l)
+gpu_total=$(echo $(nvidia-smi | sed '10q;d' | cut -d'|' -f3 | cut -d'/' -f2 | tr -dc '0-9')'/1024' | bc -l)
+ram_used=$(echo $(free --mega | sed -n '2{p;q}' | tr -s ' ' | cut -d' ' -f3)'/1024' | bc -l)
+ram_total=$(echo $(free --mega | sed -n '2{p;q}' | tr -s ' ' | cut -d' ' -f2)'/1024' | bc -l)
+printf " RAM:%2.2fGiB/%2.2fGiB  GPU:%2.2fGiB/%2.2fGiB " $ram_used $ram_total $gpu_used $gpu_total
+# free --mega | sed -n '2{p;q}' | awk '{printf ("  %2.2fGiB / %2.2fGiB \n", ( $3 / 1024), ($2 / 1024))}'

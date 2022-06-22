@@ -12,6 +12,8 @@ map R rotate
 map K zoom in
 map J zoom out
 map i recolor
+map o feedkeys ":exec zathura $FILE<Return>"
+map O feedkeys ":exec evince $FILE<Return>"
 map p print
 
 set default-bg                     "{background}"

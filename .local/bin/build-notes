@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Convert md files into html files, used for vimwiki
+
+filename=$1
+target="$(dirname "${filename}")"
+outputfile="$(basename "${filename}" .md).html"
+
+mkdir -p $target
+
+pandoc \
+    --mathjax -s -t html5 -f markdown \
+    -o "$target/$outputfile" $filename \
+    --lua-filter=/home/nguwijy/.local/bin/links-to-html.lua
+
+# -s -t html5 -f markdown \

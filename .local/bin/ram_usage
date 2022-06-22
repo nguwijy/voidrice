@@ -1,0 +1,8 @@
+#!/bin/sh
+while true
+do
+    tot=$(free --mebi | sed -n '2{p;q}' | awk '{printf ("%2.2f", $2 / 1024)}')
+    used=$(free --mebi | sed -n '2{p;q}' | awk '{printf ("%2.2f", $3 / 1024)}')
+    echo $(date) " -> " ${used} "GiB / " ${tot} "Gib RAM used." >> ram_usage.log
+    sleep 5
+done

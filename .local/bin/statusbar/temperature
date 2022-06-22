@@ -9,4 +9,8 @@ case $BLOCK_BUTTON in
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-sensors | awk '/temp1/ {print "  " $2 " "}'
+cpu_temp=$(sensors | awk '/temp1/ {print $2}' | sed 's/°C//')
+gpu_temp=$(nvidia-smi | sed '10q;d' | tr -s ' ' | cut -d' ' -f3 | sed 's/C//')
+printf " CPU:%2.1f°C  GPU:%2.1f°C \n" $cpu_temp $gpu_temp
+# printf " $cpu_temp $gpu_temp"
+# sensors | awk '/temp1/ {print "  " $2 " "}'

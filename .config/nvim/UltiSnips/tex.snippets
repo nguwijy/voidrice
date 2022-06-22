@@ -1,0 +1,642 @@
+priority -50
+
+extends texmath
+
+global !p
+
+def create_table(snip):
+	rows = snip.buffer[snip.line].split('x')[0]
+	cols = snip.buffer[snip.line].split('x')[1]
+
+	int_val = lambda string: int(''.join(s for s in string if s.isdigit()))
+
+	rows = int_val(rows)
+	cols = int_val(cols)
+
+	offset = cols + 1
+	old_spacing = snip.buffer[snip.line][:snip.buffer[snip.line].rfind('\t') + 1]
+
+	snip.buffer[snip.line] = ''
+
+	final_str = old_spacing + "\\begin{tabular}{|" + "|".join(['$' + str(i + 1) for i in range(cols)]) + "|}\n"
+
+	for i in range(rows):
+		final_str += old_spacing + '\t'
+		final_str += " & ".join(['$' + str(i * cols + j + offset) for j in range(cols)])
+
+		final_str += " \\\\\\\n"
+
+	final_str += old_spacing + "\\end{tabular}\n$0"
+
+	snip.expand_anon(final_str)
+
+def add_row(snip):
+	row_len = int(''.join(s for s in snip.buffer[snip.line] if s.isdigit()))
+	old_spacing = snip.buffer[snip.line][:snip.buffer[snip.line].rfind('\t') + 1]
+
+	snip.buffer[snip.line] = ''
+
+	final_str = old_spacing
+	final_str += " & ".join(['$' + str(j + 1) for j in range(row_len)])
+	final_str += " \\\\\\"
+
+	snip.expand_anon(final_str)
+
+endglobal
+
+
+# begin environment
+# regex default for
+# {align, assumption, corollary, definition, equation, lemma, prop, remark, theorem}
+# it seems that this does not support more than 9 regex matching
+snippet "b(egin)?" "begin{} / end{} with label" br
+\begin{${1:e}${1/(a)$|(as)$|(c)$|(d)$|(e)$|(l)$|(p)$|(r)$|(t)$|(.*)/(?1:lign)(?2:sumption)(?3:orollary)(?4:efinition)(?5:quation)(?6:emma)(?7:rop)(?8:emark)(?9:heorem)/}}
+	\label{${1/(a)$|(as)$|(c)$|(d)$|(e)$|(l)$|(p)$|(r)$|(t)$|(.*)/(?1:eq)(?2:assump)(?3:cor)(?4:def)(?5:eq)(?6:lem)(?7:prop)(?8:remark)(?9:theo)/}:${2}}
+	${0:${VISUAL}}
+\end{$1${1/(a)$|(as)$|(c)$|(d)$|(e)$|(l)$|(p)$|(r)$|(t)$|(.*)/(?1:lign)(?2:sumption)(?3:orollary)(?4:efinition)(?5:quation)(?6:emma)(?7:rop)(?8:emark)(?9:heorem)/}}
+endsnippet
+
+# for {equation*, align*}
+snippet b* "begin{} / end{} starred" b
+\begin{${1:e}${1/(a)$|(e)$|(.*)/(?1:lign)(?2:quation)/}*}
+	${0:${VISUAL}}
+\end{$1${1/(a)$|(e)$|(.*)/(?1:lign)(?2:quation)/}*}
+endsnippet
+
+# usually just for {Proof}
+snippet bb "begin{} / end{} without label" b
+\begin{${1:P}${1/(P)$|(.*)/(?1:roof)/}}
+	${0:${VISUAL}}
+\end{$1${1/(P)$|(.*)/(?1:roof)/}}
+endsnippet
+
+
+# Table & figure
+snippet tab "tabular / array environment" b
+\begin{${1:t}${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${2:c}}
+$0${2/(?<=.)(c|l|r)|./(?1: & )/g}
+\end{$1${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}
+endsnippet
+
+pre_expand "create_table(snip)"
+snippet "gentbl(\d+)x(\d+)" "Generate table of *width* by *height*" r
+endsnippet
+
+pre_expand "add_row(snip)"
+snippet "tr(\d+)" "Add table row of dimension ..." r
+endsnippet
+
+snippet table "Table environment" b
+\begin{table}[${1:htpb}]
+	\centering
+	\caption{${2:caption}}
+	\label{tab:${3:label}}
+	\begin{${4:t}${4/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${5:c}}
+	$0${5/(?<=.)(c|l|r)|./(?1: & )/g}
+	\end{$4${4/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}
+\end{table}
+endsnippet
+
+snippet fig "Figure environment" b
+\begin{figure}[${2:htpb}]
+	\centering
+	\includegraphics[width=${3:0.8}\linewidth]{${4:name.ext}}
+	\caption{${4/(\w+)\.\w+/\u$1/}$0}%
+	\label{fig:${4/(\w+)\.\w+/$1/}}
+\end{figure}
+endsnippet
+
+
+# listing
+snippet enum "Enumerate" b
+\begin{enumerate}[i)]
+	\item $0
+\end{enumerate}
+endsnippet
+
+snippet item "Itemize" b
+\begin{itemize}
+	\item $0
+\end{itemize}
+endsnippet
+
+
+# chapters & sections
+snippet cha "Chapter" b
+\chapter{${1:chapter name}}%
+\label{cha:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+$0
+endsnippet
+
+snippet sec "Section"
+\section{${1:${VISUAL:section name}}}%
+\label{sec:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+$0
+endsnippet
+
+snippet sec* "Section"
+\section*{${1:${VISUAL:section name}}}%
+\label{sec:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+${0}
+endsnippet
+
+snippet sub "Subsection"
+\subsection{${1:${VISUAL:subsection name}}}%
+\label{sub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+$0
+endsnippet
+
+snippet sub* "Subsection"
+\subsection*{${1:${VISUAL:subsection name}}}%
+\label{sub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+${0}
+endsnippet
+
+snippet ssub "Subsubsection"
+\subsubsection{${1:${VISUAL:subsubsection name}}}%
+\label{ssub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+$0
+endsnippet
+
+snippet ssub* "Subsubsection"
+\subsubsection*{${1:${VISUAL:subsubsection name}}}%
+\label{ssub:${2:${1/\\\w+\{(.*?)\}|\\(.)|(\w+)|([^\w\\]+)/(?4:_:\L$1$2$3\E)/ga}}}
+${0}
+endsnippet
+
+
+# paranthesis
+snippet ( "Long parenthesis ()"
+\left( ${1:${VISUAL:contents}} \right)$0
+endsnippet
+
+snippet [ "Long parenthesis []"
+\left[ ${1:${VISUAL:contents}} \right]$0
+endsnippet
+
+snippet { "Long parenthesis {}"
+\left\\{ ${1:${VISUAL:contents}} \right\\}$0
+endsnippet
+
+snippet | "absolute value |x|"
+\left\lvert ${1:${VISUAL:contents}} \right\rvert$0
+endsnippet
+
+snippet || "norm ||x||"
+\left\lVert ${1:${VISUAL:contents}} \right\rVert$0
+endsnippet
+
+
+# Text format
+snippet bf "Bold"
+\textbf{$1} $0
+endsnippet
+
+snippet ita "Italics"
+\textit{$1} $0
+endsnippet
+
+snippet und "Underline"
+\underline{$1} $0
+endsnippet
+
+
+# default templates
+snippet article "minimal templates for article"
+\documentclass[12pt]{article}
+
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{calc,backgrounds,arrows,matrix}
+
+\usepackage{enumerate}
+\usepackage{listings}
+
+\usepackage{color}
+\definecolor{lightblue}{rgb}{0,0.2,0.5}
+
+\usepackage[colorlinks=true, urlcolor=blue,linkcolor=blue, citecolor=lightblue]{hyperref}
+
+\usepackage[round,sort,comma,numbers]{natbib}
+
+\bibpunct{\textcolor{lightblue}{(}}{\textcolor{lightblue}{)}}{,}{a}{}{;}
+
+\usepackage{amssymb,amsmath}
+% \usepackage{mathabx}
+
+\usepackage{graphicx}
+\usepackage{subfigure}
+
+% \usepackage{graphics}
+\usepackage{color}
+\usepackage{mathrsfs}
+
+% \usepackage{enumitem}
+
+\usepackage{mathtools}
+\usepackage{accents}
+
+\DeclareMathOperator{\Hess}{Hess}
+\DeclareMathAlphabet{\eufrak}{U}{}{}{}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\SetMathAlphabet\eufrak{normal}{U}{euf}{m}{n}
+\SetMathAlphabet\eufrak{bold}{U}{euf}{b}{n}
+
+\allowdisplaybreaks
+
+\def\barb{\bar{b}}
+
+ \def\heta{{\eta}}
+ \def\hp{{p}}
+ \def\hh{{h}}
+ \def\hH{{H}}
+ \def\hPsi{{\Psi}}
+ \def\hD{{D}}
+ \def\complex{{\mathord{\mathbb C}}}
+
+ \def\bbr{{\mathord{\mathbb R}}}
+
+ \def\z{{\mathord{\mathbb Z}}}
+ \def\qu{{\mathord{\mathbb Z}}}
+\def\erphi{1}
+ \def\Cov{{\mathrm{{\rm Cov}}}}
+ \def\Var{{\mathrm{{\rm Var}}}}
+ \def\Dom{{\mathrm{{\rm Dom}}}}
+ \def\trace{{\mathrm{{\rm trace}}}}
+ \def\id{{\mathrm{{\rm Id}}}}
+ \def\Ent{{\mathrm{{\rm Ent}}}}
+ \def\var{{\mathrm{{\rm var}}}}
+ \def\div{{\mathrm{{\rm div}}}}
+ \def\Diff{{\mathrm{{\rm Diff}}}}
+ \def\T{{\mathrm{{\rm T}}}}
+
+ \def\inte{{\mathord{\mathbb R}}}
+
+ \def\G{{\mathord{{\rm {\sf G}}}}}
+
+ \def\inte{{\mathord{\mathbb N}}}
+
+ \def\sZZ{{\rm Z\kern-.45em{}Z}}
+
+ \def\sQQ{{\kern 0.27em \vrule height1.45ex width0.03em depth0em
+           \kern-0.30em \rm Q}}
+ \def\qu{{\mathchoice
+         {\sQQ}
+         {\sQQ}
+   {\kern 0.225em \vrule height1.05ex width0.025em depth0em \kern-0.25em \rm Q}
+   {\kern 0.180em \vrule height0.78ex width0.020em depth0em \kern-0.20em \rm Q}
+         }}
+ \def\sGG{{\kern 0.27em \vrule height1.45ex width0.03em depth0em
+           \kern-0.30em \rm G}}
+ \def\gg{{\mathchoice
+         {\sGG}
+         {\sGG}
+   {\kern 0.225em \vrule height1.05ex width0.025em depth0em \kern-0.25em \rm G}
+   {\kern 0.180em \vrule height0.78ex width0.020em depth0em \kern-0.20em \rm G}
+         }}
+
+ \newtheorem{prop}{Proposition}[section]
+ \newtheorem{lemma}[prop]{Lemma}
+ \newtheorem{definition}[prop]{Definition}
+ \newtheorem{corollary}[prop]{Corollary}
+ \newtheorem{theorem}[prop]{Theorem}
+ \newtheorem{algo}[prop]{Algorithm}
+ \newtheorem{remark}[prop]{Remark}
+ \newtheorem{example}[prop]{Example}
+ \newtheorem{assumption}{Assumption}
+
+\numberwithin{equation}{section}
+
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+% \renewcommand{\theenumi}{\Roman{enumi}}
+\lstset{
+  language=Python,
+  showspaces=false,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  numberstyle=\tiny,
+  captionpos=b,
+  abovecaptionskip=\bigskipamount,
+  numbers=left,
+  numbersep=8pt,
+  frame=single,
+  xleftmargin=.25in,
+  xrightmargin=.25in,
+  captionpos=b,
+  abovecaptionskip=\bigskipamount,
+  numbers=left,
+  numbersep=8pt,
+  frame=single,
+  xleftmargin=.25in,
+  xrightmargin=.10in
+}
+ \def\Dom{{\mathrm{{\rm Dom \! \ }}}}
+ \def\P{{\mathord{\mathbb P}}}
+ \def\trace{{\mathrm{{\rm trace}}}}
+ \def\Ent{{\mathrm{{\rm Ent}}}}
+ \def\var{{\mathrm{{\rm var}}}}
+ \def\div{{\mathrm{{\rm div}}}}
+
+
+\newcommand{\re}{\mathrm{e}}
+
+\newcommand{\unit}{\mbox{\boldmath \$1$}}
+\newcommand{\nor}{\mbox{$\gamma (K)$}}
+\newcommand{\dee}{\mbox{$I  \! \! \! \, D$}}
+\newcommand{\lee}{\mbox{$I  \! \! \! \, L$}}
+\newcommand{\ubar}[1]{\smash{\underline {#1}}}
+
+\def\card{{\mathord{{\rm card}}}}
+\def\sinhc{{\mathord{{\rm sinhc \hskip0.02cm }}}}
+
+ \newcounter{hyp}
+ \setcounter{hyp}{0}
+
+ \textwidth16.5cm
+ \textheight22.2cm
+ \oddsidemargin0.cm
+ \evensidemargin0.cm
+ \topmargin0.4cm
+ \headheight0cm
+ \headsep0cm
+
+ \baselineskip1in
+
+\usepackage{aeguill}
+
+\def\HH{\EuFrak H}
+
+\def\FF{\mathcal F}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{Proofx}{\removelastskip\par\medskip
+\noindent{\em Proof of Theorem} \rm}{\par}
+
+\newenvironment{Proofy}{\removelastskip\par\medskip
+\noindent{\em Proof of Theorem} \rm}{\penalty-20\null\hfill$\square$\par\medbreak}
+
+\newenvironment{Proof}{\removelastskip\par\medskip \noindent{\em Proof.} \rm}{\penalty-20\null\hfill$\square$\par\medbreak}
+
+\def\bprf{\begin{Proof}}
+\def\nprf{\end{Proof}}
+\def\bdes{\begin{description}}
+\def\ndes{\end{description}}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{rem}[thm]{Remark}
+
+\newcommand{\demo}{{\bf Proof:}}
+\newcommand{\CQFD}{\hfill $\square$\\\\}
+
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\sgn}{\mathrm{sign }\:}
+\newcommand{\eglaw}{\stackrel{{\cal L}}{=}}
+\renewcommand{\MakeUppercase}[1]{#1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\bdef{\begin{defn}}
+\def\ndef{\end{defn}}
+\def\bthm{\begin{thm}}
+\def\nthm{\end{thm}}
+\def\bprop{\begin{prop}}
+\def\nprop{\end{prop}}
+\def\brmk{\begin{remark}}
+\def\nrmk{\end{remark}}
+\def\bexa{\begin{exa}}
+\def\nexa{\end{exa}}
+\def\blem{\begin{lem}}
+\def\nlem{\end{lem}}
+\def\bcor{\begin{cor}}
+\def\ncor{\end{cor}}
+\def\bexe{\begin{exe}}
+\def\nexe{\end{exe}}
+
+
+\def\rit{\Bbb{R}}
+\def\cit{\Bbb{C}}
+\def\nit{\Bbb{N}}
+
+\def\zit{\Bbb{Z}}
+\def\qit{\Bbb{Q}}
+
+\def\dit{\Bbb{D}}
+\def\ddit{\Bbb{D}^d([0,1])}
+\def\Eit{\Bbb{E}}
+
+\def\Ac{{\cal A}}
+\def\Fc{{\cal F}}\def\FF{{\cal F}}
+\def\FM{{\cal FM}}
+\def\Gc{{\cal G}}
+\def\Hc{{\cal H}}\def\HH{{\cal H}}
+\def\Dom{\rm Dom \! \ \!}
+\def\trace{{\mathrm{{\rm trace}}}}
+\def\Ent{{\mathrm{{\rm Ent}}}}
+\def\var{{\mathrm{{\rm var}}}}
+\def\div{{\mathrm{{\rm div}}}}
+\newcommand{\aaa}{\mathbb{A}}
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\cc}{\mathbb{C}}
+\newcommand{\dd}{\mathbb{D}}
+\newcommand{\ee}{\mathbb{E}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\mm}{\mathbb{M}}
+\newcommand{\nn}{\mathbb{N}}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\pp}{\mathbb{P}}
+\newcommand{\qq}{\mathbb{Q}}
+\newcommand{\ttt}{\mathbb{T}}
+\newcommand{\zz}{\mathbb{Z}}
+
+\newcommand{\Supp}{{\rm Supp \ \! }}
+
+\def\disp{\displaystyle}
+\def\indep{\perp \!\!\!\!\perp}
+\def\cvfree{\stackrel{\mbox{\tiny free}}{\Longrightarrow}}
+\def\loifree{\stackrel{\mbox{\tiny free}}{\sim}}
+\def\pit{\Bbb{P}}
+\def\pp{\Bbb{P}}
+
+\def\Var{\mathop{\hbox{\rm Var}}\nolimits}
+\def\Cov{\mathop{\hbox{\rm Cov}}\nolimits}
+\def\tr{\mathop{\hbox{\rm tr}}\nolimits}
+
+\def\Card{\mbox{ card }}
+
+\def\cqfd{\hbox{\rule{2.5mm}{2.5mm}}}
+\def\court {\hskip 5pt}
+\def\med{\hskip 10pt}
+\def\lng{\hskip 20pt}
+\def\lto{\longrightarrow}
+
+\def\og{\leavevmode\raise.3ex
+     \hbox{$\scriptscriptstyle\langle\!\langle$~}}
+\def\fg{\leavevmode\raise.3ex
+     \hbox{~$\!\scriptscriptstyle\,\rangle\!\rangle$}~}
+
+\title{\Huge
+	Your title goes here
+}
+
+\author{
+ Jiang Yu Nguwi\footnote{\href{mailto:nguw0003@e.ntu.edu.sg}{nguw0003@e.ntu.edu.sg}
+ }
+ \qquad Nicolas Privault\footnote{
+\href{mailto:nprivault@ntu.edu.sg}{nprivault@ntu.edu.sg}
+ }
+ \\\\
+  \small
+Division of Mathematical Sciences
+\\\\
+\small
+School of Physical and Mathematical Sciences
+\\\\
+\small
+Nanyang Technological University
+\\\\
+\small
+21 Nanyang Link, Singapore 637371
+}
+
+% \author{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\allowdisplaybreaks
+
+\usepackage{empheq}
+\usepackage{bm}
+
+% \usepackage{relsize}
+\usepackage{bbm}
+
+% To define \widebar
+\makeatletter
+\newcommand*\rel@kern[1]{\kern#1\dimexpr\macc@kerna}
+\newcommand*\widebar[1]{%
+  \begingroup
+  \def\mathaccent##1##2{%
+    \rel@kern{0.8}%
+    \overline{\rel@kern{-0.8}\macc@nucleus\rel@kern{0.2}}%
+    \rel@kern{-0.2}%
+  }%
+  \macc@depth\@ne
+  \let\math@bgroup\@empty \let\math@egroup\macc@set@skewchar
+  \mathsurround\z@ \frozen@everymath{\mathgroup\macc@group\relax}%
+  \macc@set@skewchar\relax
+  \let\mathaccentV\macc@nested@a
+  \macc@nested@a\relax111{#1}%
+  \endgroup
+}
+\makeatother
+
+\let\oldcitet=\citet
+\let\oldcitep=\citep
+\renewcommand{\cite}[1]{\textcolor[rgb]{0,0,1}{\oldcitet{#1}}}
+\renewcommand{\citet}[1]{\textcolor[rgb]{0,0,1}{\oldcitet{#1}}}
+\renewcommand{\citep}[1]{\textcolor[rgb]{0,0,1}{\oldcitep{#1}}}
+
+\begin{document}
+\maketitle
+
+\baselineskip0.6cm
+
+\vspace{-0.6cm}
+
+\begin{abstract}
+	-
+\end{abstract}
+
+\noindent
+    {\em Keywords}:
+		-
+
+\noindent
+    {\em Mathematics Subject Classification (2020):}
+	-
+
+\baselineskip0.7cm
+
+\parskip-0.1cm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Section 1}
+
+\footnotesize
+
+\bibliography{../references}
+\bibliographystyle{plainnat}
+
+\end{document}
+endsnippet
+
+snippet beamer "minimal templates for beamer"
+\documentclass{beamer}
+
+\usetheme{Warsaw}
+
+\usepackage[english]{babel}
+\usepackage{mathrsfs}
+\usepackage[utf8x]{inputenc}
+\usepackage{mathtools}
+\usepackage{natbib}
+\usepackage{xcolor}
+\usepackage{bibentry}
+\usepackage{bbm}
+\usepackage{bm}
+
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+ \def\P{{\mathord{\mathbb P}}}
+
+\newcommand{\ubar}[1]{\smash{\underline {#1}}}
+\def\tr{\mathop{\hbox{\rm tr}}\nolimits}
+\def\diag{\mathop{\hbox{\rm Diag}}\nolimits}
+
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\beamersetuncovermixins{\opaqueness<1>{25}}{\opaqueness<2->{15}}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\begin{document}
+\title{Your title goes here}
+\author{Jiang Yu Nguwi}
+\institute{Nanyang Technological University}
+\date{\today \\\\ \vspace{0.5cm} \textcolor{blue}{Joint work with Nicolas Privault}}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}\frametitle{Table of contents}\tableofcontents
+\end{frame}
+
+\section{First section}
+\begin{frame}\frametitle{First frame}
+Your contents go here
+\end{frame}
+
+\bibliographystyle{plainnat}
+\nobibliography{../references}
+
+\end{document}
+endsnippet

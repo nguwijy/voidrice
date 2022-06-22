@@ -25,35 +25,55 @@ export XMODIFIERS=@im=fcitx
 
 # For nerd fonts to work
 export LANG=en_US.UTF-8
+# export LANGUAGE=en_US.UTF-8
+# export LCC_ALL=en_US.UTF-8
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
+# export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
+export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
+# config
 export XINITRC="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xinitrc"
-#export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
 export NOTMUCH_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/notmuch-config"
 export GTK2_RC_FILES="${XDG_CONFIG_HOME:-$HOME/.config}/gtk-2.0/gtkrc-2.0"
-export LESSHISTFILE="-"
 export WGETRC="${XDG_CONFIG_HOME:-$HOME/.config}/wget/wgetrc"
 export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/shell/inputrc"
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
-#export ALSA_CONFIG_PATH="$XDG_CONFIG_HOME/alsa/asoundrc"
-#export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local/share}/gnupg"
+export ALSA_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/alsa/asoundrc"
+export ANDROID_SDK_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/android"
+export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible/ansible.cfg"
+export WEECHAT_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/weechat"
+export DOCKER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/docker"
+export PYTHONSTARTUP="${XDG_CONFIG_HOME:-$HOME/.config}/ipython/profile_default/startup/start.py"
+export IPYTHONDIR="${XDG_CONFIG_HOME:-$HOME/.config}/ipython"
+export JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/jupyter"
+export KERAS_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/keras"
+export ANDROID_USER_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/android"
+export TEXMFCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/texlive/texmf-config"
+# data
+export LESSHISTFILE="-"
+export TEXMFHOME="${XDG_DATA_HOME:-$HOME/.local/share}/texmf"
+export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local/share}/gnupg"
 export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wineprefixes/default"
 export KODI_DATA="${XDG_DATA_HOME:-$HOME/.local/share}/kodi"
+export npm_config_cache="${XDG_DATA_HOME:-$HOME/.local/share}/npm"
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/password-store"
-export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
-export ANDROID_SDK_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/android"
+export CONDA_ENVS_DIRS="${XDG_DATA_HOME:-$HOME/.local/share}/conda/envs"
+export CONDA_PKGS_DIRS="${XDG_DATA_HOME:-$HOME/.local/share}/conda/pkgs"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
-export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible/ansible.cfg"
 export UNISON="${XDG_DATA_HOME:-$HOME/.local/share}/unison"
 export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
-export WEECHAT_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/weechat"
-export DROPBOX="$HOME/Dropbox"
-export PHD="$DROPBOX/Projects/phd"
+# cache...
+export TEXMFVAR="${XDG_CACHE_HOME:-$HOME/.cache}/texlive/texmf-var"
+# commonly used folder
+export DROPBOX="$HOME/Dropbox/nguwijy"
 export GDRIVE="$HOME/Gdrive"
+export ONEDRIVE="$HOME/OneDrive/"
+export QUICKDRIVE="$ONEDRIVE/quick-drive/"
+export PHD="$QUICKDRIVE/Projects/phd"
 export BIB="$PHD/tex/references.bib"
 
 # Other program settings:

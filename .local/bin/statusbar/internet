@@ -6,7 +6,9 @@
 
 case $BLOCK_BUTTON in
 	1) "$TERMINAL" -e nmtui; pkill -RTMIN+4 dwmblocks ;;
-    2) bluetoothctl power on > /dev/null; setsid -f "$TERMINAL" -e bluetoothctl ;;
+    # 2) bluetoothctl power on > /dev/null; setsid -f "$TERMINAL" -e bluetoothctl ;;
+    # 2) blueman-applet; setsid -f "$TERMINAL" -e blueman-manager ;;
+    2) blueman-applet; /bin/sh -c blueman-manager ;;
 	3) notify-send "爵 Internet module" "睊: no wifi connection
 直: wifi connection with quality
 爵: ethernet connected

@@ -1,8 +1,4 @@
 [Default Applications]
-
-# xdg-open will use these settings to determine how to open filetypes.
-# These .desktop entries can also be seen and changed in ~/.local/share/applications/
-
 text/x-shellscript=text.desktop;
 x-scheme-handler/magnet=torrent.desktop;
 application/x-bittorrent=torrent.desktop;
@@ -24,3 +20,7 @@ x-scheme-handler/msteams=teams.desktop
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libre.desktop
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=libre.desktop
 application/vnd.openxmlformats-officedocument.presentationml.presentation=libre.desktop
+
+[Added Associations]
+application/x-mobipocket-ebook=FBReader.desktop;
+text/x-python=nvim.desktop;

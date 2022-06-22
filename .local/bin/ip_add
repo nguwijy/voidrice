@@ -1,0 +1,5 @@
+public_ip=$(curl https://ipinfo.io/ip)
+local_ip=$(ip addr | sed -n '12{p;q}' | awk '{printf $2}')
+echo "Local ip address  -> " ${local_ip}
+echo "Public ip address -> " ${public_ip}
+firefox http://192.168.1.1 &

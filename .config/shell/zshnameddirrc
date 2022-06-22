@@ -1,0 +1,12 @@
+hash -d cac=/home/nguwijy/.cache 
+hash -d cf=/home/nguwijy/.config 
+hash -d D=/home/nguwijy/Downloads 
+hash -d d=/home/nguwijy/Documents 
+hash -d dt=/home/nguwijy/.local/share 
+hash -d h=/home/nguwijy 
+hash -d m=/home/nguwijy/Music 
+hash -d mn=/mnt 
+hash -d pp=/home/nguwijy/Pictures 
+hash -d sc=/home/nguwijy/.local/bin 
+hash -d src=/home/nguwijy/.local/src 
+hash -d vv=/home/nguwijy/Videos 

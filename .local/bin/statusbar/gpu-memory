@@ -9,6 +9,6 @@ case $BLOCK_BUTTON in
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-used=$(echo $(nvidia-smi | sed '10q;d' | cut -d'|' -f3 | cut -d'/' -f1 | tr -dc '0-9')'/1024' | bc -l)
-total=$(echo $(nvidia-smi | sed '10q;d' | cut -d'|' -f3 | cut -d'/' -f2 | tr -dc '0-9')'/1024' | bc -l)
-printf " %2.2fGiB / %2.2fGiB \n" $used $total
+gpu_used=$(echo $(nvidia-smi | sed '10q;d' | cut -d'|' -f3 | cut -d'/' -f1 | tr -dc '0-9')'/1024' | bc -l)
+gpu_total=$(echo $(nvidia-smi | sed '10q;d' | cut -d'|' -f3 | cut -d'/' -f2 | tr -dc '0-9')'/1024' | bc -l)
+printf " %2.2fGiB / %2.2fGiB \n" $gpu_used $gpu_total
