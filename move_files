@@ -1,0 +1,9 @@
+#!/bin/sh
+target_dir=$HOME
+yes | cp -rfT . $target_dir
+rm -f "$target_dir"/.gitmodules
+rm -f "$target_dir"/LICENSE
+rm -f "$target_dir"/FUNDING.yml
+rm -f "$target_dir"/move_files
+rm -f "$target_dir"/README.md
+rm -rf "$target_dir"/.git
