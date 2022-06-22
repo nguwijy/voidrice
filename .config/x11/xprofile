@@ -32,4 +32,4 @@ xrandr --auto
 # monitor-toggle  # Run once to activate only laptop screen
 # monitor-toggle  # Run twice to activate only monitor screen
 
-# sleep 2  # so that the window manager is fully ready
+sleep 2  # so that the window manager is fully ready
