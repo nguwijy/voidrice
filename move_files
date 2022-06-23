@@ -1,4 +1,5 @@
 #!/bin/sh
+cd $(dirname "$0")
 target_dir=$HOME
 yes | cp -rfT . $target_dir
 rm -f "$target_dir"/.gitmodules
