@@ -8,8 +8,8 @@ xset r rate 300 50
 # But when caps lock is pressed only once, treat it as escape.
 # xmodmap -e 'keycode 135 = Super_R'
 xmodmap -e 'clear Lock'
-# xmodmap -e 'keycode 66 = Escape'
-xmodmap -e 'keycode 66 = Mode_switch NoSymbol'
+xmodmap -e 'keycode 66 = Escape'
+xmodmap -e 'keycode 41 = Mode_switch NoSymbol'
 # basic movement
 xmodmap -e 'keycode 43 = h H Left Left'
 xmodmap -e 'keycode 44 = j J Down Down'
@@ -23,7 +23,8 @@ xmodmap -e 'keycode 31 = i I Home Home'
 xmodmap -e 'keycode 32 = o O End End'
 xmodmap -e 'keycode 40 = d D Next Next'
 xmodmap -e 'keycode 30 = u U Prior Prior'
-killall xcape 2>/dev/null ; xcape -e 'Mode_switch=Escape'
+xmodmap -e "keycode any = F"
+killall xcape 2>/dev/null ; xcape -e 'Mode_switch=F'
 # My current keyboard does not have menu button
 # # Map the menu button to right super
 # xmodmap -e 'keycode 135 = Super_R'
