@@ -10,10 +10,8 @@ case $BLOCK_BUTTON in
 : charging
 : charged
 - Scroll to change adjust xbacklight." ;;
-	4) awk '{print $1+10}' /sys/class/backlight/amdgpu_bl0/brightness > /sys/class/backlight/amdgpu_bl0/brightness ;;
-	5) awk '{print $1-10}' /sys/class/backlight/amdgpu_bl0/brightness > /sys/class/backlight/amdgpu_bl0/brightness ;;
-	# 4) xbacklight -inc 10 ;;  # xbacklight does not seem to work with amdgpu_bl0
-	# 5) xbacklight -dec 10 ;;
+	4) xbacklight -inc 10 ;;  # make sure the permission is handled properly https://wiki.archlinux.org/title/Backlight#ACPI
+	5) xbacklight -dec 10 ;;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
