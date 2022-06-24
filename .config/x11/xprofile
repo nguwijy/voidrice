@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# start gnome keyring
+# start gnome keyring and gpg-agent
 eval $(gnome-keyring-daemon --start)
+eval $(gpg-agent --daemon)
 # gnome-keyring-daemon &
 export SSH_AUTH_SOCK
 

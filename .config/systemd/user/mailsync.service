@@ -1,0 +1,13 @@
+[Unit]
+Description=IMAP - Maildir synchronization
+Documentation=man:mbsync(1) man:mw(1) https://github.com/lukesmithxyz/mutt-wizard
+RequiresMountsFor=/home
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/mw -Y
+Nice=18
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=graphical.target

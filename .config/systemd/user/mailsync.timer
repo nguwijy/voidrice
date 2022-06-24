@@ -1,0 +1,13 @@
+[Unit]
+Description=Periodic IMAP - Maildir synchronization
+Documentation=man:mbsync(1) man:mw(1) https://github.com/lukesmithxyz/mutt-wizard
+After=network-online.target
+After=graphical.target
+
+[Timer]
+OnStartupSec=30s
+OnUnitActiveSec=5m
+AccuracySec=1m
+
+[Install]
+WantedBy=timers.target
