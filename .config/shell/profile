@@ -72,13 +72,14 @@ export TEXMFVAR="${XDG_CACHE_HOME:-$HOME/.cache}/texlive/texmf-var"
 # commonly used folder
 export DROPBOX="$HOME/Dropbox/nguwijy"
 export GDRIVE="$HOME/Gdrive"
-export ONEDRIVE="$HOME/OneDrive/"
-export QUICKDRIVE="$ONEDRIVE/quick-drive/"
+export ONEDRIVE="$HOME/OneDrive"
+export QUICKDRIVE="$ONEDRIVE/quick-drive"
+export VIMWIKI="$ONEDRIVE/quick-drive/vimwiki"
 export PHD="$QUICKDRIVE/Projects/phd"
 export BIB="$PHD/tex/references.bib"
 
 # Other program settings:
-export DICS="/usr/share/stardict/dic/"
+export DICS="/usr/share/stardict/dic"
 export SUDO_ASKPASS="$HOME/.local/bin/dmenupass"
 export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
 export FZF_DEFAULT_COMMAND="find ."
@@ -273,3 +274,4 @@ fi
 
 # Switch escape and caps if tty and no passwd required:
 sudo -n loadkeys ${XDG_DATA_HOME:-$HOME/.local/share}/larbs/ttymaps.kmap 2>/dev/null
+
