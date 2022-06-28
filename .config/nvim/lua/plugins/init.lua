@@ -135,17 +135,6 @@ local plugins = {
    },
 
    -- misc plugins
-   -- not very useful, so it is deleted
-   ["michaelb/sniprun"] = {
-        run = "bash ./install.sh",
-        config = function()
-           require"sniprun".setup {
-               display = { "TerminalWithCode" },
-               repl_enable = { "Python3_original" },
-           }
-        end
-    },
-
    ["tpope/vim-repeat"] = {},
 
    ["vimwiki/vimwiki"] = {},
@@ -192,7 +181,7 @@ local plugins = {
    -- file managing , picker etc
    ["kyazdani42/nvim-tree.lua"] = {
       ft = "alpha",
-      cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+      module = "nvim-tree",
       config = function()
          require "plugins.configs.nvimtree"
       end,
