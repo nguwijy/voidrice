@@ -135,6 +135,17 @@ local plugins = {
    },
 
    -- misc plugins
+   -- not very useful, so it is deleted
+   ["michaelb/sniprun"] = {
+        run = "bash ./install.sh",
+        config = function()
+           require"sniprun".setup {
+               display = { "TerminalWithCode" },
+               repl_enable = { "Python3_original" },
+           }
+        end
+    },
+
    ["tpope/vim-repeat"] = {},
 
    ["vimwiki/vimwiki"] = {},

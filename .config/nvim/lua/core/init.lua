@@ -72,6 +72,38 @@ autocmd("BufDelete", {
    end,
 })
 
+-- move edited voidrice, st, dwm, dwmblocks, dmenu to correct directory
+autocmd("BufWritePost", {
+   pattern = "*/repo/voidrice/*",
+   callback = function()
+      vim.cmd "silent! !~/repo/voidrice/move_files"
+   end,
+})
+autocmd("BufWritePost", {
+   pattern = "*/repo/st/*",
+   callback = function()
+      vim.cmd "silent! !~/repo/st/move_files"
+   end,
+})
+autocmd("BufWritePost", {
+   pattern = "*/repo/dwm/*",
+   callback = function()
+      vim.cmd "silent! !~/repo/dwm/move_files"
+   end,
+})
+autocmd("BufWritePost", {
+   pattern = "*/repo/dwmblocks/*",
+   callback = function()
+      vim.cmd "silent! !~/repo/dwmblocks/move_files"
+   end,
+})
+autocmd("BufWritePost", {
+   pattern = "*/repo/dmenu/*",
+   callback = function()
+      vim.cmd "silent! !~/repo/dmenu/move_files"
+   end,
+})
+
 -- silently convert saved vimwiki md files into html files using build-notes
 autocmd("BufWritePost", {
    pattern = "*/vimwiki/*md",
