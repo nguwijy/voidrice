@@ -36,6 +36,9 @@ opt.numberwidth = 2
 opt.ruler = false
 opt.relativenumber = true
 
+-- markdown preview
+g.mkdp_theme = 'light'
+
 -- vimwiki
 g.vimwiki_list = {
     {

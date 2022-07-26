@@ -135,17 +135,15 @@ local plugins = {
    },
 
    -- misc plugins
+   ["tpope/vim-surround"] = {},
+
    ["tpope/vim-repeat"] = {},
 
    ["vimwiki/vimwiki"] = {},
 
-   ["lervag/vimtex"] = {},
+   ["mzlogin/vim-markdown-toc"] = {},
 
-   ["ur4ltz/surround.nvim"] = {
-     config = function()
-        require"surround".setup {mappings_style = "surround"}
-     end
-   },
+   ["lervag/vimtex"] = {},
 
    ["iamcco/markdown-preview.nvim"] = {
         run = "cd app && npm install",
@@ -182,6 +180,7 @@ local plugins = {
    ["kyazdani42/nvim-tree.lua"] = {
       ft = "alpha",
       module = "nvim-tree",
+      cmd = { "NvimTreeToggle", "NvimTreeFocus" },
       config = function()
          require "plugins.configs.nvimtree"
       end,
