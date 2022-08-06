@@ -7,10 +7,3 @@
 /* by default, holding the same key after tapping it is interpreted as tapping */
 /* such behavior is turned off by defining TAPPING_FORCE_HOLD */
 #define TAPPING_FORCE_HOLD
-
-/* enable caps lock light */
-#define LOCKING_SUPPORT_ENABLE
-
-/* holding whenever another keystroke is pressed */
-/* even if both actions are done within TAPPING_TERM */
-/* #define PERMISSIVE_HOLD */
