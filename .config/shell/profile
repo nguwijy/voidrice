@@ -50,6 +50,7 @@ export PYTHONSTARTUP="${XDG_CONFIG_HOME:-$HOME/.config}/ipython/profile_default/
 export IPYTHONDIR="${XDG_CONFIG_HOME:-$HOME/.config}/ipython"
 export JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/jupyter"
 export KERAS_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/keras"
+export KAGGLE_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/kaggle"
 export ANDROID_USER_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/android"
 export TEXMFCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/texlive/texmf-config"
 # data
