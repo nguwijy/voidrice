@@ -32,6 +32,8 @@ set noshowcmd
 
 " Some basics:
     nnoremap c "_c
+    " remap jk as Esc
+    inoremap jk <Esc>
     " reverse jump next and jump last
     nnoremap <C-i> <C-o>
     nnoremap <C-o> <C-i>
