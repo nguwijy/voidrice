@@ -20,3 +20,17 @@ yy[0, :] += next_state.sum(axis=0)
 torch.autograd.backward(yy.sum())
 print(X.grad)
 print(4 * X)
+
+
+from scipy.stats import norm
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plt_indicator_func_with_gaussian(sig):
+    x = np.linspace(-4, 4, 1000)
+    y = 1 - norm.cdf(-x/sig)
+    plt.plot(x, y)
+    plt.show()
+
+plt_indicator_func_with_gaussian(.1)
+plt_indicator_func_with_gaussian(1)
