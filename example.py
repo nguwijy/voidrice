@@ -34,3 +34,39 @@ def plt_indicator_func_with_gaussian(sig):
 
 plt_indicator_func_with_gaussian(.1)
 plt_indicator_func_with_gaussian(1)
+
+
+
+
+
+Dear Arnaud,
+
+As previously discussed, I plan to do a business trip from 9 Sep to 15 Sep (fly from Singapore to London on 9 Sep, take the train from London to Paris on 12 Sep evening).
+
+The primary purpose of this business trip is to meet with the GMQR Lab team in London and Paris, whom I have not yet had the opportunity to meet in person. The face-to-face interaction will be incredibly beneficial in understanding various projects and tools implemented by the team, helping to facilitate future projects and enhance our collaborations.
+
+During my trip, I will also present the latest updates on our existing projects to the team and gather feedback on our work. I look forward to exchanging ideas and best practices with the team members.
+
+Thank you for your understanding and support.
+
+Best regards,
+[Your name]
+
+
+
+Subject: Business Trip from 9 September to 15 September
+
+How do you think about the following email?
+
+Dear Arnaud,
+
+As previously discussed, I plan to do a business trip from 9 Sep to 15 Sep (fly from Singapore to London on 9 Sep, take the train from London to Paris on 12 Sep evening).
+
+The primary purpose of this business trip is to meet with the GMQR Lab team in London and Paris, whom I have not yet had the opportunity to meet in person. The face-to-face interaction will be incredibly beneficial in understanding various projects and tools implemented by the team, helping to facilitate future projects and enhance our collaborations.
+
+During my trip, I will also present the latest updates on our existing projects to the team and gather feedback on our work. I am also looking forward to exchanging ideas and best practices with the team members.
+
+Thank you for your understanding and support. I look forward to updating you on my trip when I return.
+
+Best regards,
+[Your name]
