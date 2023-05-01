@@ -41,32 +41,15 @@ plt_indicator_func_with_gaussian(1)
 
 Dear Arnaud,
 
-As previously discussed, I plan to do a business trip from 9 Sep to 15 Sep (fly from Singapore to London on 9 Sep, take the train from London to Paris on 12 Sep evening).
+I am writing to confirm my upcoming business trip from 9 Sep to 15 Sep (fly from Singapore to London on 9 Sep, take the train from London to Paris on 12 Sep evening). The purpose of this trip is to meet with the GMQR Lab team in London and Paris and discuss the progress of ongoing projects.
 
-The primary purpose of this business trip is to meet with the GMQR Lab team in London and Paris, whom I have not yet had the opportunity to meet in person. The face-to-face interaction will be incredibly beneficial in understanding various projects and tools implemented by the team, helping to facilitate future projects and enhance our collaborations.
+Specifically, I am looking forward to meeting with Francois, Marouane, and Ashraf in Paris to discuss our FXO & EQD pairs market move prediction project. I am aware of Francois' expertise in implementing trading projects using SharpeNet, and I believe that this tool will be beneficial in this project. Additionally, Marouane and Ashraf's experience in analyzing the impact of clients' trading on market move will provide valuable insights. I am excited to exchange ideas and best practices with the team members and gather feedback on our work.
 
-During my trip, I will also present the latest updates on our existing projects to the team and gather feedback on our work. I look forward to exchanging ideas and best practices with the team members.
+In London, I will be meeting with Guoyang to discuss our JGB auction project. Guoyang has experience in doing bond auction projects in the Europe region, and I believe that our discussion will be beneficial in identifying potentially relevant ideas for the JGB auction project.
 
-Thank you for your understanding and support.
+Finally, I am looking forward to meeting with Julien in London. Julien is knowledgeable in the domain of NLP, and I believe that his expertise will be beneficial for my backup support role in the E2T project.
 
-Best regards,
-[Your name]
-
-
-
-Subject: Business Trip from 9 September to 15 September
-
-How do you think about the following email?
-
-Dear Arnaud,
-
-As previously discussed, I plan to do a business trip from 9 Sep to 15 Sep (fly from Singapore to London on 9 Sep, take the train from London to Paris on 12 Sep evening).
-
-The primary purpose of this business trip is to meet with the GMQR Lab team in London and Paris, whom I have not yet had the opportunity to meet in person. The face-to-face interaction will be incredibly beneficial in understanding various projects and tools implemented by the team, helping to facilitate future projects and enhance our collaborations.
-
-During my trip, I will also present the latest updates on our existing projects to the team and gather feedback on our work. I am also looking forward to exchanging ideas and best practices with the team members.
-
-Thank you for your understanding and support. I look forward to updating you on my trip when I return.
+Thank you for your understanding and support. I am confident that this face-to-face interaction will be incredibly beneficial in understanding various projects and tools implemented by the team, helping to facilitate future projects, and enhancing our collaborations.
 
 Best regards,
-[Your name]
+Jiang Yu
