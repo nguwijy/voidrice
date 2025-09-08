@@ -67,3 +67,82 @@ cols = list(set(alphas.columns) - {'alpha084', 'c2c'})
 
 correl = alphas[cols].corrwith(alphas['c2c'], method='spearman')
 mi = mutual_info_regression(alphas[cols], alphas['c2c'])
+
+
+
+
+import torch
+import torch.nn as nn
+import time
+import psutil
+import os
+
+# ---- Define Network ----
+class BigNet(nn.Module):
+    def __init__(self, input_dim=5000, hidden_dim=5000, output_dim=1, num_hidden=5):
+        super(BigNet, self).__init__()
+        layers = []
+        layers.append(nn.Linear(input_dim, hidden_dim))
+        layers.append(nn.ReLU())
+        for _ in range(num_hidden - 1):
+            layers.append(nn.Linear(hidden_dim, hidden_dim))
+            layers.append(nn.ReLU())
+        layers.append(nn.Linear(hidden_dim, output_dim))
+        self.net = nn.Sequential(*layers)
+
+    def forward(self, x):
+        return self.net(x)
+
+# ---- Utility: measure CPU memory ----
+def get_cpu_memory():
+    process = psutil.Process(os.getpid())
+    return process.memory_info().rss / (1024**2)  # MB
+
+# ---- Profiling function ----
+def profile(device, batch_size=64, runs=50):
+    print(f"\nRunning on {device} (batch={batch_size})...")
+    model = BigNet().to(device)
+    model.eval()
+    x = torch.randn(batch_size, 5000, device=device)
+
+    # Warm-up
+    for _ in range(5):
+        _ = model(x)
+
+    # Reset memory stats
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats(device)
+
+    start_mem = get_cpu_memory()
+    start = time.time()
+
+    with torch.no_grad():
+        for _ in range(runs):
+            _ = model(x)
+
+    if device.type == "cuda":
+        torch.cuda.synchronize()
+
+    end = time.time()
+    end_mem = get_cpu_memory()
+
+    runtime = (end - start) / runs  # average per inference
+    cpu_mem_used = end_mem - start_mem
+    gpu_mem_used = (
+        torch.cuda.max_memory_allocated(device) / (1024**2)
+        if device.type == "cuda"
+        else 0
+    )
+
+    print(f"Avg Runtime per inference: {runtime*1000:.3f} ms")
+    print(f"CPU Memory Δ: {cpu_mem_used:.2f} MB")
+    if device.type == "cuda":
+        print(f"GPU Memory Peak: {gpu_mem_used:.2f} MB")
+
+# ---- Run on CPU ----
+profile(torch.device("cpu"))
+
+# ---- Run on GPU if available ----
+if torch.cuda.is_available():
+    profile(torch.device("cuda"))
+    
